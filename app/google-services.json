@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "851198308823",
+    "project_id": "notelab-d9abb",
+    "storage_bucket": "notelab-d9abb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851198308823:android:1aaf0a8dc7783a7c3b9b92",
+        "android_client_info": {
+          "package_name": "xyz.droidev.notelab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC26sDr6gViOHiFCfEK9EXJN4XBtzhk6Gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
