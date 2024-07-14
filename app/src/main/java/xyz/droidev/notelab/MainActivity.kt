@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.Keep
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import xyz.droidev.notelab.app.NoteLabApplication
 import xyz.droidev.notelab.ui.screens.auth.AuthScreen
 import xyz.droidev.notelab.ui.screens.home.HomeScreen
 import xyz.droidev.notelab.ui.screens.note.NoteScreen
@@ -34,41 +37,47 @@ class MainActivity : ComponentActivity() {
                 darkTheme = true,
                 dynamicColor = true
             ) {
-                val navController = rememberNavController()
-                val loginState by viewModel.loginState.collectAsState()
-
-                NavHost(
-                    navController = navController,
-                    startDestination = when(loginState){
-                        is LoginState.Loading -> Screen.SplashScreen
-                        is LoginState.LoggedIn -> Screen.Home
-                        is LoginState.NotLoggedIn -> Screen.Auth
-                        is LoginState.Error -> finish()
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ){
-
-                    composable<Screen.SplashScreen> { SplashScreen() }
-
-                    composable<Screen.Auth> {
-                        AuthScreen(
-                            onAuthSuccess = { navController.navigate(Screen.Home) }
-                        )
-                    }
-
-                    composable<Screen.Home> {
-                        HomeScreen(
-                            onNewNote = { navController.navigate(Screen.Note()) },
-                            onNoteClick = { noteId -> navController.navigate(Screen.Note(noteId)) }
-                        )
-                    }
-                    composable<Screen.Note> {
-                        NoteScreen(
-                            onBack = { navController.popBackStack() }
-                        )
-                    }
+                Surface {
+                    val loginState by viewModel.loginState.collectAsState()
+                    NoteLabApp(loginState)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MainActivity.NoteLabApp(loginState: LoginState) {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = when(loginState){
+            is LoginState.Loading -> Screen.SplashScreen
+            is LoginState.LoggedIn -> Screen.Home
+            is LoginState.NotLoggedIn -> Screen.Auth
+            is LoginState.Error -> finish()
+        },
+        modifier = Modifier.fillMaxSize()
+    ){
+
+        composable<Screen.SplashScreen> { SplashScreen() }
+
+        composable<Screen.Auth> {
+            AuthScreen(
+                onAuthSuccess = { navController.navigate(Screen.Home) }
+            )
+        }
+
+        composable<Screen.Home> {
+            HomeScreen(
+                onNewNote = { navController.navigate(Screen.Note()) },
+                onNoteClick = { noteId -> navController.navigate(Screen.Note(noteId)) }
+            )
+        }
+        composable<Screen.Note> {
+            NoteScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

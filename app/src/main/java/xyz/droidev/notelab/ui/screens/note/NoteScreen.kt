@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -151,7 +152,8 @@ fun NoteScreen(
                     .padding(bottom = 8.dp, start = 16.dp, end = 16.dp, top = 16.dp),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 decorationBox = { innerTextField ->
@@ -177,7 +179,8 @@ fun NoteScreen(
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp),
-                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default),
                 decorationBox = { innerTextField ->
                     if (viewModel.content.isEmpty()) {

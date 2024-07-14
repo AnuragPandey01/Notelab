@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,12 +44,17 @@ fun SplashScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.size(20.dp))
-        Text("NoteLab.", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(
+            "NoteLab.",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
         Text(
             "\"Your Laboratory for Brilliant Ideas.\"",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.secondary
         )
         Spacer(modifier = Modifier.size(20.dp))
         CircularProgressIndicator()
