@@ -27,7 +27,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
@@ -58,7 +60,7 @@ fun NoteScreen(
 ) {
     val viewModel = hiltViewModel<NoteScreenViewModel>()
 
-    if(viewModel.state == NoteScreenState.DELETED){
+    if (viewModel.state == NoteScreenState.DELETED) {
         LaunchedEffect(Unit) {
             onBack()
         }
@@ -76,11 +78,11 @@ fun NoteScreen(
                     }
                 },
                 actions = {
-                    if(viewModel.isInEditMode){
+                    if (viewModel.isInEditMode) {
                         TextButton(
                             onClick = { viewModel.addNote() },
                             enabled = viewModel.state != NoteScreenState.LOADING,
-                        ){
+                        ) {
                             Text("Save")
                         }
                         return@TopAppBar
@@ -97,7 +99,7 @@ fun NoteScreen(
                         onClick = { viewModel.pinNote() },
                     ) {
                         Icon(
-                            if(viewModel.pinned) ImageVector.vectorResource(id = R.drawable.ic_pin)
+                            if (viewModel.pinned) ImageVector.vectorResource(id = R.drawable.ic_pin)
                             else ImageVector.vectorResource(id = R.drawable.ic_pin_outline),
                             contentDescription = "Pin",
                         )
@@ -114,7 +116,7 @@ fun NoteScreen(
             )
         },
         bottomBar = {
-            BottomAppBar{
+            BottomAppBar {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_color_palette),
@@ -176,7 +178,8 @@ fun NoteScreen(
                     innerTextField()
                 },
                 readOnly = !viewModel.isInEditMode,
-                visualTransformation = if(viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation
+                visualTransformation = if (viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
             )
 
             BasicTextField(
@@ -186,8 +189,10 @@ fun NoteScreen(
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp),
-                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurface),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default),
                 decorationBox = { innerTextField ->
                     if (viewModel.content.isEmpty()) {
@@ -202,7 +207,8 @@ fun NoteScreen(
                     innerTextField()
                 },
                 readOnly = !viewModel.isInEditMode,
-                visualTransformation = if(viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation
+                visualTransformation = if (viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
             )
         }
     }
