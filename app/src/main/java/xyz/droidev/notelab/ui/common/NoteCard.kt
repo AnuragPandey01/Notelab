@@ -8,11 +8,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.droidev.notelab.data.model.NoteResponse
+import xyz.droidev.notelab.ui.utils.NoteReadVisualTransformation
 import xyz.droidev.notelab.util.DateFormatter
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -34,8 +37,16 @@ fun NoteCard(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Text(note.title, fontSize = 18.sp, fontWeight = FontWeight(500))
-            Text(note.content)
+            Text(
+                NoteReadVisualTransformation.filter(AnnotatedString(note.title)).text,
+                fontSize = 18.sp,
+                fontWeight = FontWeight(500),
+            )
+            Text(
+                NoteReadVisualTransformation.filter(AnnotatedString(note.content)).text,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
             Spacer(modifier = Modifier.padding(2.dp))
             Text(
                 DateFormatter.format(note.updatedAt!!),
