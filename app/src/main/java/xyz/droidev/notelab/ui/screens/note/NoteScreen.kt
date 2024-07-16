@@ -30,14 +30,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xyz.droidev.notelab.R
+import xyz.droidev.notelab.ui.utils.NoteEditVisualTransformation
+import xyz.droidev.notelab.ui.utils.NoteReadVisualTransformation
 import xyz.droidev.notelab.util.DateFormatter
 
 /**
@@ -169,7 +175,8 @@ fun NoteScreen(
                     }
                     innerTextField()
                 },
-                readOnly = !viewModel.isInEditMode
+                readOnly = !viewModel.isInEditMode,
+                visualTransformation = if(viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation
             )
 
             BasicTextField(
@@ -194,7 +201,8 @@ fun NoteScreen(
                     }
                     innerTextField()
                 },
-                readOnly = !viewModel.isInEditMode
+                readOnly = !viewModel.isInEditMode,
+                visualTransformation = if(viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation
             )
         }
     }
