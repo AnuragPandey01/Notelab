@@ -22,13 +22,13 @@ import xyz.droidev.notelab.ui.util.NoteEditModeText
  */
 @Composable
 fun NoteInputField(
+    modifier: Modifier = Modifier,
     value : AnnotatedString,
     placeHolder: String,
     onValueChange: (String) -> Unit,
     isInEditMode: Boolean,
     textStyle: TextStyle,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    modifier: Modifier = Modifier
 ) {
     if(isInEditMode){
         BasicTextField(

@@ -51,12 +51,13 @@ fun LoginScreen(
     }
 
     if(authState is AuthState.Error){
-
+        LaunchedEffect(authState){ onError((authState as AuthState.Error).message) }
     }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
     ) {
         OutlinedTextField(
             value = email,
