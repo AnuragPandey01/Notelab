@@ -31,6 +31,7 @@ import xyz.droidev.notelab.ui.common.PasswordField
 @Composable
 fun LoginScreen(
     onSuccess: () -> Unit,
+    onError : (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -47,6 +48,10 @@ fun LoginScreen(
 
     if(authState is AuthState.Success){
         LaunchedEffect(Unit){ onSuccess() }
+    }
+
+    if(authState is AuthState.Error){
+
     }
 
     Column(

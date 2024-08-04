@@ -2,12 +2,12 @@ package xyz.droidev.notelab.ui.screens.note
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -27,25 +27,19 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xyz.droidev.notelab.R
-import xyz.droidev.notelab.ui.utils.NoteEditVisualTransformation
-import xyz.droidev.notelab.ui.utils.NoteReadVisualTransformation
+import xyz.droidev.notelab.ui.common.NoteInputField
+import xyz.droidev.notelab.ui.util.NoteReadModeText
 import xyz.droidev.notelab.util.DateFormatter
 
 /**
@@ -152,63 +146,33 @@ fun NoteScreen(
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
 
-            BasicTextField(
-                value = viewModel.title,
+            NoteInputField(
+                value = if(viewModel.isInEditMode) AnnotatedString(viewModel.title)
+                    else NoteReadModeText.apply(AnnotatedString(viewModel.title)),
                 onValueChange = { viewModel.title = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp, top = 16.dp),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                decorationBox = { innerTextField ->
-                    if (viewModel.title.isEmpty()) {
-                        Text(
-                            "Title",
-                            style = LocalTextStyle.current.copy(
-                                fontSize = 24.sp,
-                                color = Color.Gray,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                    innerTextField()
-                },
-                readOnly = !viewModel.isInEditMode,
-                visualTransformation = if (viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation,
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+                placeHolder = "Title",
+                isInEditMode = viewModel.isInEditMode,
             )
-
-            BasicTextField(
-                value = viewModel.content,
+            Spacer(modifier = Modifier.padding(8.dp))
+            NoteInputField(
+                value = if (viewModel.isInEditMode) AnnotatedString(viewModel.content)
+                    else NoteReadModeText.apply(AnnotatedString(viewModel.content)),
                 onValueChange = { viewModel.content = it },
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
+                    .weight(1f),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default),
-                decorationBox = { innerTextField ->
-                    if (viewModel.content.isEmpty()) {
-                        Text(
-                            "Content",
-                            style = LocalTextStyle.current.copy(
-                                fontSize = 16.sp,
-                                color = Color.Gray
-                            )
-                        )
-                    }
-                    innerTextField()
-                },
-                readOnly = !viewModel.isInEditMode,
-                visualTransformation = if (viewModel.isInEditMode) NoteEditVisualTransformation else NoteReadVisualTransformation,
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+                isInEditMode = viewModel.isInEditMode,
+                placeHolder = "Content"
             )
         }
     }

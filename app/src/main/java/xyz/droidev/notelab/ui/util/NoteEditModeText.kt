@@ -1,21 +1,20 @@
-package xyz.droidev.notelab.ui.utils
+package xyz.droidev.notelab.ui.util
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration.Companion.LineThrough
+import androidx.compose.ui.text.withStyle
 
 /**
  * Project : Notelab.
  * @author PANDEY ANURAG.
  */
-object NoteReadVisualTransformation: VisualTransformation {
+object NoteEditModeText {
 
-    override fun filter(text: AnnotatedString): TransformedText {
+    fun apply(text: AnnotatedString): AnnotatedString{
         val combinedPattern = Regex("__(.*?)__|\\*\\*(.*?)\\*\\*|~~(.*?)~~")
 
         val rawText = text.text
@@ -35,23 +34,33 @@ object NoteReadVisualTransformation: VisualTransformation {
             val contentStart = annotatedString.length
             var content = match
             var style = SpanStyle()
+            var stylingChars = ""
 
             when {
                 match.startsWith("__") -> {
                     style = SpanStyle(fontStyle = FontStyle.Italic)
                     content = match.removeSurrounding("__")
+                    stylingChars = "__"
                 }
                 match.startsWith("**") -> {
                     style = SpanStyle(fontWeight = FontWeight.Bold)
                     content = match.removeSurrounding("**")
+                    stylingChars = "**"
                 }
                 match.startsWith("~~") -> {
                     style = SpanStyle(textDecoration = LineThrough)
                     content = match.removeSurrounding("~~")
+                    stylingChars = "~~"
                 }
             }
-
+            annotatedString.withStyle(SpanStyle(color = Color.LightGray)){
+                append(stylingChars)
+            }
             annotatedString.append(AnnotatedString(content, style))
+            annotatedString.withStyle(SpanStyle(color = Color.LightGray)){
+                append(stylingChars)
+            }
+
             offsets.add(Pair(start, contentStart))
             lastIndex = end
         }
@@ -61,34 +70,6 @@ object NoteReadVisualTransformation: VisualTransformation {
             annotatedString.append(rawText.substring(lastIndex))
         }
 
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                var transformedOffset = offset
-                offsets.forEach { (original, transformed) ->
-                    if (offset >= original) {
-                        transformedOffset -= 2
-                    }
-                    if (offset >= original + 1) {
-                        transformedOffset -= 2
-                    }
-                }
-                return transformedOffset
-            }
-
-            override fun transformedToOriginal(offset: Int): Int {
-                var originalOffset = offset
-                offsets.forEach { (original, transformed) ->
-                    if (offset >= transformed) {
-                        originalOffset += 2
-                    }
-                    if (offset >= transformed + 1) {
-                        originalOffset += 2
-                    }
-                }
-                return originalOffset
-            }
-        }
-
-        return TransformedText(annotatedString.toAnnotatedString(), offsetMapping)
+        return annotatedString.toAnnotatedString()
     }
 }

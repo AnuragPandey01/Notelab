@@ -15,10 +15,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.droidev.notelab.data.model.NoteResponse
-import xyz.droidev.notelab.ui.utils.NoteReadVisualTransformation
+import xyz.droidev.notelab.ui.util.NoteReadModeText
 import xyz.droidev.notelab.util.DateFormatter
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
  * Project : Notelab.
@@ -38,12 +36,12 @@ fun NoteCard(
             modifier = Modifier.padding(8.dp)
         ) {
             Text(
-                NoteReadVisualTransformation.filter(AnnotatedString(note.title)).text,
+                NoteReadModeText.apply(AnnotatedString(note.title)),
                 fontSize = 18.sp,
                 fontWeight = FontWeight(500),
             )
             Text(
-                NoteReadVisualTransformation.filter(AnnotatedString(note.content)).text,
+                NoteReadModeText.apply(AnnotatedString(note.content)),
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )

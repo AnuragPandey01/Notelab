@@ -78,5 +78,6 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.material.icons.extended)
     implementation("io.appwrite:sdk-for-android:5.1.1")
 }
